@@ -16,8 +16,7 @@ public:
 		unsigned char* packet = new unsigned char[sizeof(size_t) + 50];
 		unsigned char* placeholder = packet;
 		size_t len = s.length();
-		*reinterpret_cast<size_t*>(packet) = s.length(); 
-		len = *reinterpret_cast<size_t*>(packet); packet += sizeof(size_t);
+		*reinterpret_cast<size_t*>(packet) = s.length(); packet += sizeof(size_t);
 		*reinterpret_cast<int*>(packet) = i; packet += sizeof(int);
 
 		for (auto i = 0; i < s.length(); ++i) *reinterpret_cast<char*>(packet++) = s[i];
