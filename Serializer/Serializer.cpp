@@ -13,13 +13,13 @@ public:
 	std::string s;
 
 	unsigned char* to_bytes() {
-		unsigned char* packet = new unsigned char[sizeof(size_t) + 50];
+		unsigned char* packet = new unsigned char[sizeof(size_t) + sizeof(int) + s.length()];
 		unsigned char* placeholder = packet;
 		size_t len = s.length();
 		*reinterpret_cast<size_t*>(packet) = s.length(); packet += sizeof(size_t);
 		*reinterpret_cast<int*>(packet) = i; packet += sizeof(int);
 
-		for (auto i = 0; i < s.length(); ++i) *reinterpret_cast<char*>(packet++) = s[i];
+		for (auto i = 0; i < s.length(); ++i) *packet++ = s[i];
 
 		return placeholder;
 	}
@@ -59,6 +59,7 @@ int main()
 	Serializable s{ 1, "oh shit waddup" };
 
 	unsigned char* serialized = s.to_bytes();
+	unsigned char* placeholder = serialized;
 	size_t length = *reinterpret_cast<size_t*>(serialized); serialized += sizeof(size_t);
 	int j = *reinterpret_cast<int*>(serialized); serialized += sizeof(int);
 	char* c_string = reinterpret_cast<char*>(serialized);
@@ -67,6 +68,6 @@ int main()
 
 	std::cout << j << str;
 
-	delete[] serialized;
+	delete[] placeholder;
 }
 
